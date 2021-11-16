@@ -28,11 +28,10 @@ const fetchTransactionsFromOwner = async (address) => {
       `accountTxs/${address}?before=0&limit=100&skip=0&type=cosmos.bank.v1beta1.MsgSend`
     )
 
-    return response.data.data
-      .map((tx) => tx.messages)
-      .reduce((result, messages) => {
-        return [...result, ...messages]
-      }, [])
+    return response.data.data.map((tx) => ({
+      date: tx.block_timestamp,
+      messages: tx.messages,
+    }))
   } catch (e) {
     throw new Error(e)
   }

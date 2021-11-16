@@ -84,25 +84,35 @@ exports.handler = async function (event, _context, callback) {
   }
 
   const ownerTxs = await fetchTransactionsFromOwner(ownerInjectiveAddress)
-  const sendTxExists = ownerTxs.find((message) => {
-    if (!message.value) {
-      return false
-    }
+  const transaction = ownerTxs.find((tx) => {
+    const { messages } = tx
 
-    if (!message.value.to_address) {
-      return false
-    }
+    return messages.find((message) => {
+      if (!message.value) {
+        return false
+      }
 
-    return message.value.to_address.toLowerCase() === address.toLowerCase()
+      if (!message.value.to_address) {
+        return false
+      }
+
+      return message.value.to_address.toLowerCase() === address.toLowerCase()
+    })
   })
 
-  if (sendTxExists) {
-    return callback(null, {
-      statusCode: 400,
-      body: JSON.stringify({
-        message: 'You have already used the faucet',
-      }),
-    })
+  if (transaction) {
+    const date = new Date(transaction.date).getTime()
+    const msInADay = 84600 * 1000
+    const now = Date.now()
+
+    if (date + msInADay > now) {
+      return callback(null, {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: 'You have already used the faucet in the past 24 hours',
+        }),
+      })
+    }
   }
 
   const denoms = eligibleDenomsWithAmounts()
@@ -121,7 +131,8 @@ exports.handler = async function (event, _context, callback) {
     return callback(null, {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'We have sent you testnet funds to your address!',
+        message:
+          'We have sent you testnet funds to your address! You can request again in 24 hours.',
       }),
     })
   } catch (e) {
