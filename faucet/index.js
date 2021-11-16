@@ -131,8 +131,7 @@ exports.handler = async function (event, _context, callback) {
     return callback(null, {
       statusCode: 200,
       body: JSON.stringify({
-        message:
-          'We have sent you testnet funds to your address! You can request again in 24 hours.',
+        message: `We have sent you testnet funds to your address ${address}! You can request again in 24 hours.`,
       }),
     })
   } catch (e) {
