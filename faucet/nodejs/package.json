@@ -1,0 +1,21 @@
+{
+  "name": "injective-faucet",
+  "version": "0.0.1",
+  "description": "Lambda function powering the faucet UI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bojan Angjelkoski <bojan@injectivelabs.org>",
+  "license": "MIT",
+  "dependencies": {
+    "@injectivelabs/chain-consumer": "^0.0.92",
+    "@injectivelabs/exchange-consumer": "^0.0.103",
+    "@injectivelabs/networks": "^0.0.49",
+    "@injectivelabs/ts-types": "^0.0.25",
+    "@injectivelabs/utils": "^0.0.38",
+    "@injectivelabs/web3-strategy": "^0.0.70",
+    "dotenv": "^10.0.0",
+    "file-system-cache": "^1.0.5"
+  }
+}

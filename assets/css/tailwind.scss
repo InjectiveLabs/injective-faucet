@@ -1,0 +1,15 @@
+@tailwind base;
+
+@import './components/mixins';
+@import './components/root';
+@import './components/fonts';
+
+@tailwind components;
+@import './components/inputs';
+@import './components/buttons';
+@import './components/scrollbar';
+
+@tailwind utilities;
+@import './components/lists';
+@import './components/transitions';
+@import './components/custom';
