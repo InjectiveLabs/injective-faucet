@@ -3,7 +3,7 @@ const { Network, getUrlEndpointForNetwork } = require('@injectivelabs/networks')
 
 const eligibleDenoms = () => {
   const usdtDenom =
-    process.env.APP_ADDRESS === Network.Testnet
+    process.env.APP_NETWORK === Network.Testnet
       ? 'peggy0x69efCB62D98f4a6ff5a0b0CFaa4AAbB122e85e08'
       : 'peggy0xdAC17F958D2ee523a2206206994597C13D831ec7'
 
