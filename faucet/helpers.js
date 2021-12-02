@@ -14,7 +14,7 @@ const eligibleDenomsWithAmounts = () => {
   const [inj, usdt] = eligibleDenoms()
 
   return {
-    [inj]: new BigNumberInBase(10000).toWei(), // 10000 INJ
+    [inj]: new BigNumberInBase(100).toWei(), // 100 INJ
     [usdt]: new BigNumberInBase(10000).toWei(6), // 10000 USDT
   }
 }

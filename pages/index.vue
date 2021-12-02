@@ -13,7 +13,13 @@
       >
       </v-input>
       <div class="w-full mt-6 text-center">
-        <v-button lg class="w-full" primary @click.stop="handleClickOnSubmit">
+        <v-button
+          :status="status"
+          lg
+          class="w-full"
+          primary
+          @click.stop="handleClickOnSubmit"
+        >
           Submit
         </v-button>
       </div>
@@ -23,6 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { Status } from '@injectivelabs/utils'
 import VInput from '~/components/inputs/input.vue'
 import VButton from '~/components/elements/button.vue'
 
@@ -34,6 +41,7 @@ export default Vue.extend({
 
   data() {
     return {
+      status: new Status(),
       address: '',
     }
   },
@@ -60,6 +68,8 @@ export default Vue.extend({
         )
       }
 
+      this.status.setLoading()
+
       this.$axios
         .$get(`${process.env.APP_API_FAUCET_ENDPOINT}?address=${this.address}`)
         .then((response: any) => {
@@ -67,6 +77,9 @@ export default Vue.extend({
         })
         .catch((e) => {
           this.$toast.error(e.response ? e.response.data.message : e.message)
+        })
+        .finally(() => {
+          this.status.setIdle()
         })
     },
   },
