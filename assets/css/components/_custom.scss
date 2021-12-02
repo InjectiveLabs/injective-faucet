@@ -7,6 +7,11 @@
   @apply shadow-md border;
 }
 
+.toasted.bubble.success {
+  @apply text-primary-800 font-bold;
+  background: theme('colors.primary.500') !important;
+}
+
 .toasted.bubble.error {
   @apply text-gray-800 font-bold;
   background: theme('colors.red.500') !important;
@@ -60,7 +65,6 @@ nav {
     @apply bg-gray-950 font-semibold;
   }
 }
-
 
 .spinner {
   @apply block mx-auto w-6 h-6 bg-transparent border-4 rounded-full top-0 left-0 border-transparent;
