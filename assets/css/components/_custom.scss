@@ -60,3 +60,16 @@ nav {
     @apply bg-gray-950 font-semibold;
   }
 }
+
+
+.spinner {
+  @apply block mx-auto w-6 h-6 bg-transparent border-4 rounded-full top-0 left-0 border-transparent;
+  border-top-color: theme('colors.white');
+  animation: spin 0.6s ease-out infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

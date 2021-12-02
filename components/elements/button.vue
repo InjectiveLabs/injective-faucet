@@ -6,15 +6,25 @@
     v-bind="$attrs"
     v-on="$listeners"
   >
-    <slot></slot>
+    <slot v-if="status && status.isNotLoading()" />
+    <span v-if="status && status.isLoading()" class="block w-full">
+      <span class="spinner" />
+    </span>
   </button>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Status } from '@injectivelabs/utils'
 
 export default Vue.extend({
   props: {
+    status: {
+      required: false,
+      type: Object,
+      default: () => new Status(),
+    },
+
     sm: {
       required: false,
       default: false,
@@ -178,6 +188,10 @@ export default Vue.extend({
             'border-primary-500'
           )
         }
+      }
+
+      if (this.status.isLoading()) {
+        classes.push('pointer-events-none', 'cursor-not-allowed')
       }
 
       return classes.join(' ')
