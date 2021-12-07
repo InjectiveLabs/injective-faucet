@@ -3,41 +3,18 @@
   overflow-x: hidden;
 }
 
-.toasted.bubble {
-  @apply shadow-md border;
+.toasted.toasted-primary {
+  @apply shadow-md border font-bold;
 }
 
-.toasted.bubble.success {
-  @apply text-primary-800 font-bold;
+.toasted.toasted-primary.success {
+  @apply text-gray-800;
   background: theme('colors.primary.500') !important;
 }
 
-.toasted.bubble.error {
-  @apply text-gray-800 font-bold;
+.toasted.toasted-primary.error {
+  @apply text-red-900;
   background: theme('colors.red.500') !important;
-}
-
-.toasted.bubble.info {
-  @apply text-gray-500 shadow-md;
-  background: theme('colors.gray.700') !important;
-
-  .action {
-    @apply font-bold;
-  }
-
-  .text-primary-500 {
-    color: theme('colors.primary.500') !important;
-  }
-}
-
-.toasted.bubble.success {
-  @apply text-gray-800 font-bold;
-  background: theme('colors.primary.500') !important;
-}
-
-.toasted.bubble.default {
-  @apply text-gray-200 shadow-sm;
-  background: theme('colors.gray.600') !important;
 }
 
 .toasted-container .toasted.default .action.text-primary-500 {
