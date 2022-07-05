@@ -11,8 +11,8 @@ jobs:
       ## Public
       APP_NAME: 'Injective Faucet: Access Unlimited DeFi Markets'
       APP_BASE_URL: https://faucet.injective.network
-      APP_NETWORK: devnet
-      APP_ENV: devnet
+      APP_NETWORK: testnetK8s
+      APP_ENV: testnet
       APP_CHAIN_ID: 42
       SOURCE_DIR: dist
       DEST_DIR: www
