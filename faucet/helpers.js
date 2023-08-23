@@ -1,4 +1,5 @@
-const { BigNumberInBase, HttpClient } = require('@injectivelabs/utils')
+const { BigNumberInBase } = require('@injectivelabs/utils')
+const { IndexerRestExplorerApi } = require('@injectivelabs/sdk-ts')
 const { endpoints } = require('./config')
 
 const eligibleDenoms = () => {
@@ -29,19 +30,17 @@ const eligibleDenomsWithAmounts = () => {
 }
 
 const fetchTransactionsFromOwner = async (address) => {
-  const client = new HttpClient(endpoints.indexer)
+  const client = new IndexerRestExplorerApi(endpoints.indexer)
 
   try {
-    const response = await client.get(
-      `accountTxs/${address}?limit=100`
-    )
+    const response = await client.fetchAccountTransactions({account: address, params: {limit: 100}})
     
-    if (!response.data.data) {
+    if (!response.transactions) {
       return []
     }
 
-    return response.data.data.map((tx) => ({
-      date: tx.block_timestamp,
+    return response.transactions.map((tx) => ({
+      date: tx.blockNumber,
       messages: tx.messages || [],
     }))
   } catch (e) {
