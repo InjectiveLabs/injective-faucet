@@ -1,10 +1,11 @@
 require('dotenv').config()
-const { BankComposer } = require('@injectivelabs/chain-consumer')
+const { MsgSend, PrivateKey } = require('@injectivelabs/sdk-ts')
 const {
   eligibleDenomsWithAmounts,
   fetchTransactionsFromOwner,
 } = require('./helpers')
-const TxProvider = require('./provider')
+const MsgBroadcasterWithPk = require('./provider')
+const { network, privateKey } = require('./config')
 
 exports.handler = async function (event, _context, callback) {
   if (event && event.httpMethod && event.httpMethod === 'OPTIONS') {
@@ -34,7 +35,7 @@ exports.handler = async function (event, _context, callback) {
     })
   }
 
-  if (!process.env.APP_NETWORK) {
+  if (!network) {
     return callback(null, {
       statusCode: 500,
       body: JSON.stringify({
@@ -43,7 +44,7 @@ exports.handler = async function (event, _context, callback) {
     })
   }
 
-  if (!process.env.APP_PRIVATE_KEY) {
+  if (!privateKey) {
     return callback(null, {
       statusCode: 500,
       body: JSON.stringify({
@@ -52,17 +53,8 @@ exports.handler = async function (event, _context, callback) {
     })
   }
 
-  if (!process.env.APP_ADDRESS) {
-    return callback(null, {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: 'APP_PRIVATE_KEY is missing from .env!',
-      }),
-    })
-  }
-
-  const ownerAddress = process.env.APP_ADDRESS
-  const ownerInjectiveAddress = process.env.APP_INJECTIVE_ADDRESS
+  const pk = PrivateKey.fromHex(privateKey)
+  const ownerInjectiveAddress = pk.toBech32()
   const address = event.queryStringParameters.address
 
   if (!address.startsWith('inj')) {
@@ -117,17 +109,19 @@ exports.handler = async function (event, _context, callback) {
 
   const denoms = eligibleDenomsWithAmounts()
   const messages = Object.keys(denoms).map((denom) => {
-    return BankComposer.send({
-      denom,
-      amount: denoms[denom].toFixed(),
+    return MsgSend.fromJSON({
+      amount: {
+        denom,
+        amount: denoms[denom].toFixed(),
+      },
       srcInjectiveAddress: ownerInjectiveAddress,
       dstInjectiveAddress: address,
     })
   })
-  const provider = new TxProvider({ address: ownerAddress, message: messages })
 
   try {
-    await provider.broadcast()
+    await MsgBroadcasterWithPk.broadcast({msgs: messages, injectiveAddress: ownerInjectiveAddress})
+
     return callback(null, {
       statusCode: 200,
       body: JSON.stringify({
