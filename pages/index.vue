@@ -62,16 +62,10 @@ export default Vue.extend({
         return this.$toast.error('Please enter a valid Injective address')
       }
 
-      if (!process.env.APP_API_FAUCET_ENDPOINT) {
-        return this.$toast.error(
-          'Please set APP_API_FAUCET_ENDPOINT in your .env'
-        )
-      }
-
       this.status.setLoading()
 
       this.$axios
-        .$get(`${process.env.APP_API_FAUCET_ENDPOINT}?address=${this.address}`)
+        .$post(`https://api.express.injective.dev/testnet-faucet`, { address })
         .then((response: any) => {
           this.$toast.success(response.message)
         })
