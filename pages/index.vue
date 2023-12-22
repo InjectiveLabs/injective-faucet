@@ -24,6 +24,15 @@
         </v-button>
       </div>
     </div>
+    <p class="mt-4">
+      Alternative testnet faucet
+      <a
+        href="https://bwarelabs.com/faucets/injective-testnet"
+        target="_blank"
+        class="text-primary-500"
+        >here</a
+      >
+    </p>
   </div>
 </template>
 
